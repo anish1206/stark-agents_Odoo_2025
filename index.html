@@ -1,0 +1,1974 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Swap Platform</title>
+    <style>
+        /* General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header & Navigation */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .header h1 {
+            text-align: center;
+            color: #00d4ff;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(45deg, #00d4ff 0%, #667eea 100%);
+        }
+
+        /* Section Styling */
+        .section {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #00d4ff;
+            font-weight: 600;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #e0e0e0;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #00d4ff;
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Buttons */
+        .btn {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-danger {
+            background: linear-gradient(45deg, #ff6b6b 0%, #ee5a52 100%);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #4ecdc4 0%, #44a08d 100%);
+            box-shadow: 0 4px 15px rgba(78, 205, 196, 0.3);
+        }
+
+        /* Skills Tags */
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+            min-height: 40px; /* Ensure visibility even if empty */
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        .skill-tag {
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .skill-tag .remove-skill {
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        /* Search Bar */
+        .search-bar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            display: flex; /* Added for layout */
+            gap: 10px; /* Added for spacing */
+        }
+        .search-bar input {
+            flex-grow: 1; /* Make input take available space */
+        }
+
+
+        /* User Card */
+        .user-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+        .user-card h3 {
+            color: #00d4ff;
+            margin-bottom: 5px;
+        }
+        .user-card p {
+            margin-bottom: 8px;
+        }
+        .user-card .skills-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 10px;
+        }
+        .user-card .skill-badge {
+            background: #333;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+
+        /* Swap Request Card */
+        .swap-request {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .swap-request h4 {
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+        .swap-request p {
+            margin-bottom: 5px;
+        }
+        .swap-request .swap-details {
+            margin-bottom: 15px;
+        }
+        .swap-request .swap-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+
+        .swap-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-left: 10px;
+        }
+
+        .status-pending {
+            background: linear-gradient(45deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #2d3436;
+        }
+
+        .status-accepted {
+            background: linear-gradient(45deg, #4ecdc4 0%, #44a08d 100%);
+            color: white;
+        }
+
+        .status-rejected, .status-cancelled {
+            background: linear-gradient(45deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+        }
+
+        .status-completed {
+            background: linear-gradient(45deg, #a29bfe 0%, #6c5ce7 100%);
+            color: white;
+        }
+
+        /* Modals */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            overflow-y: auto; /* Allow scrolling for small screens */
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 500px;
+            margin: 10% auto;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
+            cursor: pointer;
+            color: #e0e0e0;
+        }
+
+        /* Rating Stars */
+        .rating-stars {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .star {
+            font-size: 28px; /* Slightly larger stars */
+            color: #555;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .star:hover,
+        .star.active {
+            color: #ffd700;
+        }
+
+        /* Admin Panel Stats */
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-number {
+            font-size: 2.2em; /* Slightly larger numbers */
+            font-weight: bold;
+            color: #00d4ff;
+            margin-bottom: 10px;
+        }
+        .admin-tab {
+            display: none;
+        }
+        .admin-tab.active {
+            display: block;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1001;
+            animation: slideIn 0.5s ease-in-out;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .notification.success {
+            background: linear-gradient(45deg, #4ecdc4 0%, #44a08d 100%);
+        }
+
+        .notification.error {
+            background: linear-gradient(45deg, #ff6b6b 0%, #ee5a52 100%);
+        }
+
+        .notification.info {
+            background: linear-gradient(45deg, #a7b7ff 0%, #768bf7 100%);
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+        }
+
+
+        /* Layout Helpers */
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .nav-btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            .modal-content {
+                margin: 5% auto;
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔄 Skill Swap Platform</h1>
+            <div class="nav-buttons">
+                <button class="nav-btn active" onclick="showSection(event, 'profile')">Profile</button>
+                <button class="nav-btn" onclick="showSection(event, 'browse')">Browse Users</button>
+                <button class="nav-btn" onclick="showSection(event, 'swaps')">My Swaps</button>
+                <button class="nav-btn" onclick="showSection(event, 'admin')" id="adminNavButton" style="display: none;">Admin Panel</button>
+                <button class="nav-btn btn-danger" onclick="signOutUser()">Sign Out</button>
+            </div>
+        </div>
+
+        <div id="auth" class="section active">
+            <h2>Welcome! Please Sign In or Sign Up</h2>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="authEmail">Email</label>
+                    <input type="email" id="authEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Password</label>
+                    <input type="password" id="authPassword" required>
+                </div>
+                <button type="submit" class="btn" id="signInBtn">Sign In</button>
+                <button type="button" class="btn" id="signUpBtn">Sign Up</button>
+            </form>
+        </div>
+
+        <div id="profile" class="section">
+            <h2>My Profile</h2>
+            <form id="profileForm">
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="location">Location (Optional)</label>
+                        <input type="text" id="location">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profilePhoto">Profile Photo URL (Optional)</label>
+                    <input type="url" id="profilePhoto">
+                </div>
+
+                <div class="form-group">
+                    <label for="availability">Availability</label>
+                    <select id="availability">
+                        <option value="weekends">Weekends</option>
+                        <option value="evenings">Evenings</option>
+                        <option value="weekdays">Weekdays</option>
+                        <option value="flexible">Flexible</option>
+                    </select>
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="isPublic" checked>
+                    <label for="isPublic">Make profile public</label>
+                </div>
+
+                <div class="form-group">
+                    <label>Skills I Offer</label>
+                    <div class="skills-container" id="offeredSkillsContainer"></div>
+                    <input type="text" id="newOfferedSkill" placeholder="Add a skill you can teach">
+                    <button type="button" class="btn" onclick="addSkill('offered')">Add Skill</button>
+                </div>
+
+                <div class="form-group">
+                    <label>Skills I Want to Learn</label>
+                    <div class="skills-container" id="wantedSkillsContainer"></div>
+                    <input type="text" id="newWantedSkill" placeholder="Add a skill you want to learn">
+                    <button type="button" class="btn" onclick="addSkill('wanted')">Add Skill</button>
+                </div>
+
+                <button type="submit" class="btn btn-success">Save Profile</button>
+            </form>
+        </div>
+
+        <div id="browse" class="section">
+            <h2>Browse Users</h2>
+            <div class="search-bar">
+                <input type="text" id="searchSkill" placeholder="Search by skill (e.g., 'Photoshop', 'Excel')">
+                <button class="btn" onclick="searchUsers()">Search</button>
+            </div>
+            <div id="usersList"></div>
+        </div>
+
+        <div id="swaps" class="section">
+            <h2>My Swaps</h2>
+            <div class="nav-buttons" style="margin-bottom: 20px;">
+                <button class="nav-btn active" onclick="showSwapTab(event, 'incoming')">Incoming Requests</button>
+                <button class="nav-btn" onclick="showSwapTab(event, 'outgoing')">Outgoing Requests</button>
+                <button class="nav-btn" onclick="showSwapTab(event, 'active')">Active Swaps</button>
+                <button class="nav-btn" onclick="showSwapTab(event, 'completed')">Completed</button>
+            </div>
+
+            <div id="incomingSwaps" class="swap-tab active"></div>
+            <div id="outgoingSwaps" class="swap-tab"></div>
+            <div id="activeSwaps" class="swap-tab"></div>
+            <div id="completedSwaps" class="swap-tab"></div>
+        </div>
+
+        <div id="admin" class="section">
+            <h2>Admin Panel</h2>
+
+            <div class="admin-stats">
+                <div class="stat-card">
+                    <div class="stat-number" id="totalUsersStat">0</div>
+                    <div>Total Users</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="activeSwapsStat">0</div>
+                    <div>Active Swaps</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="pendingReviewsStat">0</div>
+                    <div>Pending Reviews</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="reportedUsersStat">0</div>
+                    <div>Reported Users</div>
+                </div>
+            </div>
+
+            <div class="nav-buttons" style="margin-bottom: 20px;">
+                <button class="nav-btn active" onclick="showAdminTab(event, 'adminUsers')">Manage Users</button>
+                <button class="nav-btn" onclick="showAdminTab(event, 'adminSwaps')">Monitor Swaps</button>
+                <button class="nav-btn" onclick="showAdminTab(event, 'adminMessages')">Send Messages</button>
+                <button class="nav-btn" onclick="showAdminTab(event, 'adminReports')">Download Reports</button>
+            </div>
+
+            <div id="adminUsers" class="admin-tab active"></div>
+            <div id="adminSwaps" class="admin-tab"></div>
+            <div id="adminMessages" class="admin-tab">
+                <h3>Send Platform-wide Message</h3>
+                <form id="messageForm">
+                    <div class="form-group">
+                        <label for="messageTitle">Message Title</label>
+                        <input type="text" id="messageTitle" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="messageContent">Message Content</label>
+                        <textarea id="messageContent" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Send Message</button>
+                </form>
+            </div>
+            <div id="adminReports" class="admin-tab">
+                <h3>Download Reports</h3>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap;">
+                    <button class="btn" onclick="downloadReport('users')">User Activity Report</button>
+                    <button class="btn" onclick="downloadReport('feedback')">Feedback Logs</button>
+                    <button class="btn" onclick="downloadReport('swaps')">Swap Statistics</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="swapModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('swapModal')">&times;</span>
+            <h3>Request Skill Swap with <span id="targetUserName"></span></h3>
+            <form id="swapForm">
+                <div class="form-group">
+                    <label>Your Skill to Offer</label>
+                    <select id="offerSkill"></select>
+                </div>
+                <div class="form-group">
+                    <label>Skill You Want to Learn from Them</label>
+                    <select id="requestSkill"></select>
+                </div>
+                <div class="form-group">
+                    <label>Message (Optional)</label>
+                    <textarea id="swapMessage" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Send Request</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="ratingModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('ratingModal')">&times;</span>
+            <h3>Rate Swap with <span id="ratingTargetUserName"></span></h3>
+            <form id="ratingForm">
+                <div class="form-group">
+                    <label>Rating</label>
+                    <div class="rating-stars">
+                        <span class="star" data-value="1">★</span>
+                        <span class="star" data-value="2">★</span>
+                        <span class="star" data-value="3">★</span>
+                        <span class="star" data-value="4">★</span>
+                        <span class="star" data-value="5">★</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Feedback (Optional)</label>
+                    <textarea id="feedback" rows="3"></textarea>
+                </div>
+                <button type="submit" class="btn btn-success">Submit Rating</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="notificationContainer" class="notification" style="display: none;"></div>
+
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+        import {
+            getFirestore,
+            collection,
+            doc,
+            setDoc,
+            getDoc,
+            query,
+            where,
+            getDocs,
+            deleteDoc,
+            updateDoc,
+            serverTimestamp,
+            addDoc,
+            onSnapshot, // Import onSnapshot for real-time listeners
+            orderBy
+        } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+        import {
+            getAuth,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            onAuthStateChanged,
+            signOut
+        } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+        // import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-analytics.js"; // Optional, if you want analytics
+
+        // Your web app's Firebase configuration
+        // !!! IMPORTANT: Replace these with your actual Firebase project configuration values !!!
+        const firebaseConfig = {
+            apiKey: "AIzaSyCpv0vN8NvY8izTnx81-vh4jqzlV_LKfCA",
+            authDomain: "odoo2025starkagents.firebaseapp.com",
+            projectId: "odoo2025starkagents",
+            storageBucket: "odoo2025starkagents.firebasestorage.app",
+            messagingSenderId: "304083126106",
+            appId: "1:304083126106:web:1baf8a517e3d21aeba9563",
+            measurementId: "G-CX2EX4E30X"
+        };
+
+        // Initialize Firebase and get service instances
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        // const analytics = getAnalytics(app); // Optional, if you want analytics
+
+        // Global variables
+        let currentUser = {
+            id: null,
+            email: null, // Added for convenience
+            name: '',
+            location: '',
+            profilePhoto: '',
+            availability: 'flexible',
+            isPublic: true,
+            offeredSkills: [],
+            wantedSkills: [],
+            isAdmin: false // Default to false
+        };
+
+        let selectedRating = 0;
+        let currentSwapId = null;
+        let currentTargetUser = null; // Stores data of the user being requested for a swap
+        let currentRatedSwap = null; // Stores data of the swap being rated
+
+        // References to DOM elements
+        const authSection = document.getElementById('auth');
+        const profileSection = document.getElementById('profile');
+        const browseSection = document.getElementById('browse');
+        const swapsSection = document.getElementById('swaps');
+        const adminSection = document.getElementById('admin');
+
+        const profileForm = document.getElementById('profileForm');
+        const nameInput = document.getElementById('name');
+        const locationInput = document.getElementById('location');
+        const profilePhotoInput = document.getElementById('profilePhoto');
+        const availabilitySelect = document.getElementById('availability');
+        const isPublicCheckbox = document.getElementById('isPublic');
+        const offeredSkillsContainer = document.getElementById('offeredSkillsContainer');
+        const wantedSkillsContainer = document.getElementById('wantedSkillsContainer');
+        const newOfferedSkillInput = document.getElementById('newOfferedSkill');
+        const newWantedSkillInput = document.getElementById('newWantedSkill');
+
+        const usersListDiv = document.getElementById('usersList');
+        const searchSkillInput = document.getElementById('searchSkill');
+
+        const incomingSwapsDiv = document.getElementById('incomingSwaps');
+        const outgoingSwapsDiv = document.getElementById('outgoingSwaps');
+        const activeSwapsDiv = document.getElementById('activeSwaps');
+        const completedSwapsDiv = document.getElementById('completedSwaps');
+
+        const swapModal = document.getElementById('swapModal');
+        const targetUserNameSpan = document.getElementById('targetUserName');
+        const offerSkillSelect = document.getElementById('offerSkill');
+        const requestSkillSelect = document.getElementById('requestSkill');
+        const swapMessageTextarea = document.getElementById('swapMessage');
+        const swapForm = document.getElementById('swapForm');
+
+        const ratingModal = document.getElementById('ratingModal');
+        const ratingTargetUserNameSpan = document.getElementById('ratingTargetUserName');
+        const ratingStars = document.querySelector('.rating-stars');
+        const feedbackTextarea = document.getElementById('feedback');
+        const ratingForm = document.getElementById('ratingForm');
+
+        const totalUsersStat = document.getElementById('totalUsersStat');
+        const activeSwapsStat = document.getElementById('activeSwapsStat');
+        const pendingReviewsStat = document.getElementById('pendingReviewsStat');
+        const reportedUsersStat = document.getElementById('reportedUsersStat');
+
+        const adminUsersDiv = document.getElementById('adminUsers');
+        const adminSwapsDiv = document.getElementById('adminSwaps');
+        const messageTitleInput = document.getElementById('messageTitle');
+        const messageContentTextarea = document.getElementById('messageContent');
+        const messageForm = document.getElementById('messageForm');
+
+        const adminNavButton = document.getElementById('adminNavButton');
+        const notificationContainer = document.getElementById('notificationContainer');
+
+        const authEmailInput = document.getElementById('authEmail');
+        const authPasswordInput = document.getElementById('authPassword');
+        const authForm = document.getElementById('authForm');
+        const signInBtn = document.getElementById('signInBtn');
+        const signUpBtn = document.getElementById('signUpBtn');
+
+
+        // --- Utility & UI Functions ---
+
+        /**
+         * Displays a temporary notification message.
+         * @param {string} message - The message to display.
+         * @param {'success'|'error'|'info'} type - The type of notification.
+         */
+        function showNotification(message, type) {
+            notificationContainer.textContent = message;
+            notificationContainer.className = `notification ${type}`; // Reset and set class
+            notificationContainer.style.display = 'block';
+
+            setTimeout(() => {
+                notificationContainer.style.animation = 'slideOut 0.5s forwards';
+                notificationContainer.addEventListener('animationend', () => {
+                    notificationContainer.style.display = 'none';
+                    notificationContainer.style.animation = ''; // Reset animation
+                }, { once: true });
+            }, 3000);
+        }
+
+        /**
+         * Hides all sections and shows the specified one.
+         * Activates the corresponding navigation button.
+         * @param {Event} event - The click event.
+         * @param {string} sectionId - The ID of the section to show.
+         */
+        function showSection(event, sectionId) {
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionId).classList.add('active');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (event && event.currentTarget) { // Event might be null for initial load
+                event.currentTarget.classList.add('active');
+            } else { // Handle initial load, set active button based on sectionId
+                const navBtn = document.querySelector(`.nav-buttons .nav-btn[onclick*="${sectionId}"]`);
+                if (navBtn) navBtn.classList.add('active');
+            }
+
+
+            // Specific content loads when a section becomes active
+            if (sectionId === 'browse') {
+                loadAllUsers();
+            } else if (sectionId === 'swaps') {
+                loadSwapRequests(); // Load all categories
+                showSwapTab(null, 'incoming'); // Default to incoming swaps
+            } else if (sectionId === 'admin' && currentUser.isAdmin) {
+                loadAdminStats();
+                loadAdminUsers();
+                loadAdminSwaps();
+                showAdminTab(null, 'adminUsers'); // Default to manage users tab
+            } else if (sectionId === 'profile') {
+                populateProfileForm(); // Ensure profile form is up-to-date
+            }
+        }
+
+        /**
+         * Handles showing/hiding modals.
+         * @param {string} modalId - The ID of the modal to show.
+         */
+        function showModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        /**
+         * Handles closing modals.
+         * @param {string} modalId - The ID of the modal to close.
+         */
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        /**
+         * Adds a skill tag to the UI and updates the current user's skills array.
+         * @param {'offered'|'wanted'} type - The type of skill (offered or wanted).
+         */
+        function addSkill(type) {
+            const inputElement = type === 'offered' ? newOfferedSkillInput : newWantedSkillInput;
+            const containerElement = type === 'offered' ? offeredSkillsContainer : wantedSkillsContainer;
+            const skill = inputElement.value.trim();
+
+            if (skill && !currentUser[`${type}Skills`].includes(skill)) {
+                currentUser[`${type}Skills`].push(skill);
+                renderSkills(type);
+                inputElement.value = '';
+            } else if (skill && currentUser[`${type}Skills`].includes(skill)) {
+                showNotification(`Skill "${skill}" already added!`, 'info');
+            }
+        }
+
+        /**
+         * Removes a skill tag from the UI and updates the current user's skills array.
+         * @param {'offered'|'wanted'} type - The type of skill.
+         * @param {string} skillToRemove - The skill to remove.
+         */
+        function removeSkill(type, skillToRemove) {
+            currentUser[`${type}Skills`] = currentUser[`${type}Skills`].filter(skill => skill !== skillToRemove);
+            renderSkills(type);
+        }
+
+        /**
+         * Renders skill tags in the UI based on the current user's skills.
+         * @param {'offered'|'wanted'} type - The type of skill to render.
+         */
+        function renderSkills(type) {
+            const containerElement = type === 'offered' ? offeredSkillsContainer : wantedSkillsContainer;
+            containerElement.innerHTML = '';
+            currentUser[`${type}Skills`].forEach(skill => {
+                const skillTag = document.createElement('span');
+                skillTag.className = 'skill-tag';
+                skillTag.innerHTML = `${skill} <button class="remove-skill" onclick="removeSkill('${type}', '${skill}')">&times;</button>`;
+                containerElement.appendChild(skillTag);
+            });
+        }
+
+        /**
+         * Populates the profile form with current user data.
+         */
+        function populateProfileForm() {
+            if (currentUser.id) {
+                nameInput.value = currentUser.name;
+                locationInput.value = currentUser.location;
+                profilePhotoInput.value = currentUser.profilePhoto;
+                availabilitySelect.value = currentUser.availability;
+                isPublicCheckbox.checked = currentUser.isPublic;
+                renderSkills('offered');
+                renderSkills('wanted');
+            }
+        }
+
+        /**
+         * Shows the appropriate swap tab (incoming, outgoing, active, completed).
+         * @param {Event} event - The click event.
+         * @param {string} tabId - The ID of the tab to show.
+         */
+        function showSwapTab(event, tabId) {
+            document.querySelectorAll('.swap-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId + 'Swaps').classList.add('active');
+
+            document.querySelectorAll('#swaps .nav-buttons .nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            } else { // For initial load or programmatic calls
+                const swapTabBtn = document.querySelector(`#swaps .nav-buttons .nav-btn[onclick*="${tabId}"]`);
+                if (swapTabBtn) swapTabBtn.classList.add('active');
+            }
+        }
+
+        /**
+         * Shows the appropriate admin tab.
+         * @param {Event} event - The click event.
+         * @param {string} tabId - The ID of the tab to show.
+         */
+        function showAdminTab(event, tabId) {
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+
+            document.querySelectorAll('#admin .nav-buttons .nav-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            if (event && event.currentTarget) {
+                event.currentTarget.classList.add('active');
+            }
+        }
+
+
+        // --- Firebase Authentication ---
+
+        /**
+         * Handles user sign-up.
+         * @param {Event} e - The form submission event.
+         */
+        async function signUp(e) {
+            e.preventDefault();
+            const email = authEmailInput.value;
+            const password = authPasswordInput.value;
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                // Create a basic user profile in Firestore immediately
+                await setDoc(doc(db, "users", user.uid), {
+                    email: user.email,
+                    name: 'New User',
+                    location: '',
+                    profilePhoto: '',
+                    availability: 'flexible',
+                    isPublic: true,
+                    offeredSkills: [],
+                    wantedSkills: [],
+                    isAdmin: false, // Default to false
+                    createdAt: serverTimestamp()
+                });
+                showNotification('Account created successfully! Please complete your profile.', 'success');
+            } catch (error) {
+                showNotification(`Sign Up Error: ${error.message}`, 'error');
+                console.error("Sign Up Error:", error);
+            }
+        }
+
+        /**
+         * Handles user sign-in.
+         * @param {Event} e - The form submission event.
+         */
+        async function signIn(e) {
+            e.preventDefault();
+            const email = authEmailInput.value;
+            const password = authPasswordInput.value;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                showNotification('Signed in successfully!', 'success');
+            } catch (error) {
+                showNotification(`Sign In Error: ${error.message}`, 'error');
+                console.error("Sign In Error:", error);
+            }
+        }
+
+        /**
+         * Handles user sign-out.
+         */
+        async function signOutUser() {
+            try {
+                await signOut(auth);
+                showNotification('Signed out successfully!', 'info');
+            } catch (error) {
+                showNotification(`Sign Out Error: ${error.message}`, 'error');
+                console.error("Sign Out Error:", error);
+            }
+        }
+
+        /**
+         * Listens for authentication state changes and updates UI.
+         */
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in
+                currentUser.id = user.uid;
+                currentUser.email = user.email;
+
+                // Fetch user data from Firestore
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (userDocSnap.exists()) {
+                    currentUser = { ...currentUser, ...userDocSnap.data() };
+                } else {
+                    // If user profile doesn't exist (e.g., first-time signup via other means, or manually deleted)
+                    // Create a basic profile for them
+                    await setDoc(userDocRef, {
+                        email: user.email,
+                        name: user.displayName || 'New User',
+                        location: '',
+                        profilePhoto: user.photoURL || '',
+                        availability: 'flexible',
+                        isPublic: true,
+                        offeredSkills: [],
+                        wantedSkills: [],
+                        isAdmin: false,
+                        createdAt: serverTimestamp()
+                    });
+                    const newUserDocSnap = await getDoc(userDocRef);
+                    currentUser = { ...currentUser, ...newUserDocSnap.data() };
+                    showNotification('Welcome! Please complete your profile.', 'info');
+                }
+
+                // Update UI for logged-in user
+                authSection.style.display = 'none';
+                document.querySelectorAll('.header .nav-buttons button').forEach(btn => btn.style.display = 'inline-block');
+                adminNavButton.style.display = currentUser.isAdmin ? 'inline-block' : 'none';
+
+                showSection(null, 'profile'); // Show profile section by default
+                populateProfileForm(); // Populate form with fetched data
+                loadSwapRequests(); // Start listening to swaps
+
+            } else {
+                // User is signed out
+                currentUser = {
+                    id: null,
+                    email: null,
+                    name: '',
+                    location: '',
+                    profilePhoto: '',
+                    availability: 'flexible',
+                    isPublic: true,
+                    offeredSkills: [],
+                    wantedSkills: [],
+                    isAdmin: false
+                };
+
+                // Update UI for logged-out user
+                authSection.style.display = 'block';
+                document.querySelectorAll('.header .nav-buttons button').forEach(btn => {
+                    if (btn.id !== 'signInBtn' && btn.id !== 'signUpBtn' && btn.id !== 'authForm') { // Exclude auth buttons
+                        btn.style.display = 'none';
+                    }
+                });
+                adminNavButton.style.display = 'none';
+                profileSection.classList.remove('active');
+                browseSection.classList.remove('active');
+                swapsSection.classList.remove('active');
+                adminSection.classList.remove('active');
+                authSection.classList.add('active'); // Ensure auth section is visible
+                authForm.reset(); // Clear auth form
+            }
+        });
+
+
+        // --- Profile Management ---
+
+        /**
+         * Saves the current user's profile data to Firestore.
+         * @param {Event} e - The form submission event.
+         */
+        async function saveProfile(e) {
+            e.preventDefault();
+            if (!currentUser.id) {
+                showNotification('Please sign in to save your profile.', 'error');
+                return;
+            }
+
+            try {
+                await setDoc(doc(db, "users", currentUser.id), {
+                    name: nameInput.value,
+                    location: locationInput.value,
+                    profilePhoto: profilePhotoInput.value,
+                    availability: availabilitySelect.value,
+                    isPublic: isPublicCheckbox.checked,
+                    offeredSkills: currentUser.offeredSkills,
+                    wantedSkills: currentUser.wantedSkills,
+                    email: currentUser.email, // Keep email as it's set on creation
+                    isAdmin: currentUser.isAdmin, // Preserve admin status
+                    lastUpdated: serverTimestamp()
+                }, { merge: true }); // Use merge to update existing fields without overwriting others
+
+                // Update currentUser object with latest form data
+                currentUser.name = nameInput.value;
+                currentUser.location = locationInput.value;
+                currentUser.profilePhoto = profilePhotoInput.value;
+                currentUser.availability = availabilitySelect.value;
+                currentUser.isPublic = isPublicCheckbox.checked;
+
+                showNotification('Profile saved successfully!', 'success');
+            } catch (error) {
+                showNotification(`Error saving profile: ${error.message}`, 'error');
+                console.error("Error saving profile:", error);
+            }
+        }
+
+
+        // --- Browse Users ---
+
+        /**
+         * Loads and displays all public users or filtered users.
+         * @param {string} searchTerm - Optional search term for skills.
+         */
+        async function loadAllUsers(searchTerm = '') {
+            usersListDiv.innerHTML = '';
+            let q;
+            if (searchTerm) {
+                // Case-insensitive search for offered or wanted skills
+                const skillRegex = new RegExp(searchTerm, 'i');
+                q = query(collection(db, "users"), where("isPublic", "==", true));
+            } else {
+                q = query(collection(db, "users"), where("isPublic", "==", true));
+            }
+
+            try {
+                const querySnapshot = await getDocs(q);
+                let usersFound = false;
+
+                querySnapshot.forEach((doc) => {
+                    const userData = doc.data();
+                    // Filter by skill on the client-side for case-insensitivity and "contains" logic
+                    if (searchTerm) {
+                        const offeredMatches = userData.offeredSkills.some(skill => skillRegex.test(skill));
+                        const wantedMatches = userData.wantedSkills.some(skill => skillRegex.test(skill));
+                        if (!offeredMatches && !wantedMatches) {
+                            return; // Skip if no skills match
+                        }
+                    }
+
+                    // Don't show the current user in the browse list
+                    if (doc.id === currentUser.id) return;
+
+                    usersFound = true;
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card';
+                    const initials = userData.name ? userData.name.charAt(0).toUpperCase() : userData.email.charAt(0).toUpperCase();
+                    const profileImage = userData.profilePhoto ? `<img src="${userData.profilePhoto}" alt="${userData.name}" style="width:60px; height:60px; border-radius:50%; object-fit:cover;">` : `<div class="user-avatar">${initials}</div>`;
+
+                    userCard.innerHTML = `
+                        <div class="user-info">
+                            ${profileImage}
+                            <div>
+                                <h3>${userData.name || 'Anonymous User'}</h3>
+                                <p><strong>Location:</strong> ${userData.location || 'N/A'}</p>
+                                <p><strong>Availability:</strong> ${userData.availability}</p>
+                            </div>
+                        </div>
+                        <p><strong>Offers:</strong></p>
+                        <div class="skills-list">
+                            ${userData.offeredSkills.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+                        </div>
+                        <p><strong>Wants to Learn:</strong></p>
+                        <div class="skills-list">
+                            ${userData.wantedSkills.map(skill => `<span class="skill-badge">${skill}</span>`).join('')}
+                        </div>
+                        <button class="btn" onclick="openSwapModal('${doc.id}', '${userData.name}', ${JSON.stringify(userData.offeredSkills)})">Request Swap</button>
+                    `;
+                    usersListDiv.appendChild(userCard);
+                });
+
+                if (!usersFound) {
+                    usersListDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No users found matching your search or no public profiles available.</p>';
+                }
+
+            } catch (error) {
+                showNotification(`Error loading users: ${error.message}`, 'error');
+                console.error("Error loading users:", error);
+            }
+        }
+
+        /**
+         * Initiates a user search based on the skill input.
+         */
+        function searchUsers() {
+            const searchTerm = searchSkillInput.value.trim();
+            loadAllUsers(searchTerm);
+        }
+
+        /**
+         * Opens the swap request modal and populates it.
+         * @param {string} targetUserId - The ID of the user to swap with.
+         * @param {string} targetUserName - The name of the user to swap with.
+         * @param {Array<string>} targetUserOfferedSkills - Skills offered by the target user.
+         */
+        function openSwapModal(targetUserId, targetUserName, targetUserOfferedSkills) {
+            if (!currentUser.id) {
+                showNotification('Please sign in to send a swap request.', 'error');
+                return;
+            }
+            if (currentUser.id === targetUserId) {
+                showNotification('You cannot request a swap with yourself!', 'info');
+                return;
+            }
+
+            currentTargetUser = { id: targetUserId, name: targetUserName, offeredSkills: targetUserOfferedSkills };
+            targetUserNameSpan.textContent = targetUserName;
+
+            // Populate 'Your Skill to Offer' (currentUser.offeredSkills)
+            offerSkillSelect.innerHTML = '<option value="">Select your skill</option>';
+            if (currentUser.offeredSkills && currentUser.offeredSkills.length > 0) {
+                currentUser.offeredSkills.forEach(skill => {
+                    const option = document.createElement('option');
+                    option.value = skill;
+                    option.textContent = skill;
+                    offerSkillSelect.appendChild(option);
+                });
+            } else {
+                offerSkillSelect.innerHTML = '<option value="">No skills offered in your profile.</option>';
+                showNotification('Please add skills you offer in your profile first.', 'info');
+            }
+
+
+            // Populate 'Skill You Want to Learn from Them' (targetUser.offeredSkills)
+            requestSkillSelect.innerHTML = '<option value="">Select skill to learn</option>';
+            if (targetUserOfferedSkills && targetUserOfferedSkills.length > 0) {
+                targetUserOfferedSkills.forEach(skill => {
+                    const option = document.createElement('option');
+                    option.value = skill;
+                    option.textContent = skill;
+                    requestSkillSelect.appendChild(option);
+                });
+            } else {
+                requestSkillSelect.innerHTML = '<option value="">This user offers no skills or their profile is private.</option>';
+            }
+
+            swapMessageTextarea.value = ''; // Clear previous message
+            showModal('swapModal');
+        }
+
+        /**
+         * Sends a skill swap request to another user.
+         * @param {Event} e - The form submission event.
+         */
+        async function sendSwapRequest(e) {
+            e.preventDefault();
+            if (!currentUser.id) {
+                showNotification('You must be signed in to send a request.', 'error');
+                return;
+            }
+            if (!currentTargetUser) {
+                showNotification('No target user selected for swap.', 'error');
+                return;
+            }
+
+            const offerSkill = offerSkillSelect.value;
+            const requestSkill = requestSkillSelect.value;
+            const message = swapMessageTextarea.value.trim();
+
+            if (!offerSkill || !requestSkill) {
+                showNotification('Please select both your skill to offer and the skill you want to learn.', 'error');
+                return;
+            }
+
+            try {
+                await addDoc(collection(db, "swaps"), {
+                    requesterId: currentUser.id,
+                    requesterName: currentUser.name || currentUser.email,
+                    requesterSkillOffered: offerSkill,
+                    accepterId: currentTargetUser.id,
+                    accepterName: currentTargetUser.name,
+                    accepterSkillOffered: requestSkill, // This is the skill the accepter offers, which the requester wants
+                    message: message,
+                    status: 'pending', // pending, accepted, rejected, cancelled, completed
+                    requestedAt: serverTimestamp()
+                });
+                showNotification('Swap request sent successfully!', 'success');
+                closeModal('swapModal');
+            } catch (error) {
+                showNotification(`Error sending swap request: ${error.message}`, 'error');
+                console.error("Error sending swap request:", error);
+            }
+        }
+
+
+        // --- My Swaps ---
+
+        /**
+         * Loads and displays all swap requests relevant to the current user.
+         * Uses real-time listeners (onSnapshot).
+         */
+        function loadSwapRequests() {
+            if (!currentUser.id) return;
+
+            // Clear previous content
+            incomingSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No incoming requests.</p>';
+            outgoingSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No outgoing requests.</p>';
+            activeSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No active swaps.</p>';
+            completedSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No completed swaps.</p>';
+
+
+            // Incoming Requests (current user is the accepter)
+            const qIncoming = query(collection(db, "swaps"),
+                where("accepterId", "==", currentUser.id),
+                where("status", "==", "pending"),
+                orderBy("requestedAt", "desc")
+            );
+            onSnapshot(qIncoming, (snapshot) => {
+                incomingSwapsDiv.innerHTML = '';
+                if (snapshot.empty) {
+                    incomingSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No incoming requests.</p>';
+                } else {
+                    snapshot.forEach((doc) => {
+                        const swap = doc.data();
+                        incomingSwapsDiv.appendChild(createSwapCard(doc.id, swap, 'incoming'));
+                    });
+                }
+            }, (error) => console.error("Error loading incoming swaps:", error));
+
+
+            // Outgoing Requests (current user is the requester)
+            const qOutgoing = query(collection(db, "swaps"),
+                where("requesterId", "==", currentUser.id),
+                where("status", "==", "pending"),
+                orderBy("requestedAt", "desc")
+            );
+            onSnapshot(qOutgoing, (snapshot) => {
+                outgoingSwapsDiv.innerHTML = '';
+                if (snapshot.empty) {
+                    outgoingSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No outgoing requests.</p>';
+                } else {
+                    snapshot.forEach((doc) => {
+                        const swap = doc.data();
+                        outgoingSwapsDiv.appendChild(createSwapCard(doc.id, swap, 'outgoing'));
+                    });
+                }
+            }, (error) => console.error("Error loading outgoing swaps:", error));
+
+
+            // Active Swaps (current user is requester or accepter, status is accepted)
+            const qActiveRequester = query(collection(db, "swaps"),
+                where("requesterId", "==", currentUser.id),
+                where("status", "==", "accepted"),
+                orderBy("requestedAt", "desc")
+            );
+            const qActiveAccepter = query(collection(db, "swaps"),
+                where("accepterId", "==", currentUser.id),
+                where("status", "==", "accepted"),
+                orderBy("requestedAt", "desc")
+            );
+
+            // Combine active swaps from both roles and deduplicate
+            Promise.all([getDocs(qActiveRequester), getDocs(qActiveAccepter)])
+                .then(([requesterSnapshot, accepterSnapshot]) => {
+                    const activeSwapMap = new Map(); // Use a map to store unique swaps
+                    requesterSnapshot.forEach(doc => activeSwapMap.set(doc.id, doc.data()));
+                    accepterSnapshot.forEach(doc => activeSwapMap.set(doc.id, doc.data()));
+
+                    activeSwapsDiv.innerHTML = '';
+                    if (activeSwapMap.size === 0) {
+                        activeSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No active swaps.</p>';
+                    } else {
+                        // Sort active swaps by requestedAt if needed, otherwise order is somewhat arbitrary from map
+                        const sortedActiveSwaps = Array.from(activeSwapMap.entries())
+                            .sort(([, a], [, b]) => (b.requestedAt?.toDate() || 0) - (a.requestedAt?.toDate() || 0));
+
+                        sortedActiveSwaps.forEach(([id, swap]) => {
+                            activeSwapsDiv.appendChild(createSwapCard(id, swap, 'active'));
+                        });
+                    }
+                })
+                .catch(error => console.error("Error loading active swaps:", error));
+
+            // Completed Swaps
+            const qCompletedRequester = query(collection(db, "swaps"),
+                where("requesterId", "==", currentUser.id),
+                where("status", "==", "completed"),
+                orderBy("completedAt", "desc") // Order by completion time
+            );
+            const qCompletedAccepter = query(collection(db, "swaps"),
+                where("accepterId", "==", currentUser.id),
+                where("status", "==", "completed"),
+                orderBy("completedAt", "desc") // Order by completion time
+            );
+
+            // Combine completed swaps and deduplicate
+            Promise.all([getDocs(qCompletedRequester), getDocs(qCompletedAccepter)])
+                .then(([requesterSnapshot, accepterSnapshot]) => {
+                    const completedSwapMap = new Map();
+                    requesterSnapshot.forEach(doc => completedSwapMap.set(doc.id, doc.data()));
+                    accepterSnapshot.forEach(doc => completedSwapMap.set(doc.id, doc.data()));
+
+                    completedSwapsDiv.innerHTML = '';
+                    if (completedSwapMap.size === 0) {
+                        completedSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No completed swaps.</p>';
+                    } else {
+                        const sortedCompletedSwaps = Array.from(completedSwapMap.entries())
+                            .sort(([, a], [, b]) => (b.completedAt?.toDate() || 0) - (a.completedAt?.toDate() || 0));
+
+                        sortedCompletedSwaps.forEach(([id, swap]) => {
+                            completedSwapsDiv.appendChild(createSwapCard(id, swap, 'completed'));
+                        });
+                    }
+                })
+                .catch(error => console.error("Error loading completed swaps:", error));
+        }
+
+
+        /**
+         * Creates an HTML card for a swap request.
+         * @param {string} swapId - The ID of the swap document.
+         * @param {Object} swap - The swap data.
+         * @param {string} type - 'incoming', 'outgoing', 'active', 'completed'.
+         * @returns {HTMLElement} The created swap card element.
+         */
+        function createSwapCard(swapId, swap, type) {
+            const card = document.createElement('div');
+            card.className = 'swap-request';
+
+            const isRequester = swap.requesterId === currentUser.id;
+            const otherUserName = isRequester ? swap.accepterName : swap.requesterName;
+            const skillYouOffer = isRequester ? swap.requesterSkillOffered : swap.accepterSkillOffered;
+            const skillYouLearn = isRequester ? swap.accepterSkillOffered : swap.requesterSkillOffered;
+
+            const requestedAtDate = swap.requestedAt ? new Date(swap.requestedAt.toDate()).toLocaleString() : 'N/A';
+            const completedAtDate = swap.completedAt ? new Date(swap.completedAt.toDate()).toLocaleString() : 'N/A';
+
+            let buttonsHtml = '';
+            if (type === 'incoming') {
+                buttonsHtml = `
+                    <button class="btn btn-success" onclick="acceptSwap('${swapId}')">Accept</button>
+                    <button class="btn btn-danger" onclick="rejectSwap('${swapId}')">Reject</button>
+                `;
+            } else if (type === 'outgoing') {
+                buttonsHtml = `
+                    <button class="btn btn-danger" onclick="cancelSwap('${swapId}')">Cancel Request</button>
+                `;
+            } else if (type === 'active') {
+                // Determine who can mark complete (e.g., only requester, or both)
+                // For simplicity, let's say either can mark complete.
+                buttonsHtml = `
+                    <button class="btn btn-success" onclick="markSwapComplete('${swapId}', '${otherUserName}')">Mark as Completed</button>
+                    <button class="btn btn-danger" onclick="cancelSwap('${swapId}')">Cancel Swap</button>
+                `;
+            } else if (type === 'completed') {
+                if (!swap.ratingGivenByRequester && isRequester) {
+                    buttonsHtml = `<button class="btn" onclick="openRatingModal('${swapId}', '${otherUserName}')">Rate ${otherUserName}</button>`;
+                } else if (!swap.ratingGivenByAccepter && !isRequester) {
+                     buttonsHtml = `<button class="btn" onclick="openRatingModal('${swapId}', '${otherUserName}')">Rate ${otherUserName}</button>`;
+                }
+            }
+
+
+            card.innerHTML = `
+                <h4>Swap with ${otherUserName} <span class="swap-status status-${swap.status}">${swap.status}</span></h4>
+                <div class="swap-details">
+                    <p><strong>You offer:</strong> ${skillYouOffer}</p>
+                    <p><strong>You learn:</strong> ${skillYouLearn}</p>
+                    ${swap.message ? `<p><strong>Message:</strong> ${swap.message}</p>` : ''}
+                    <p><strong>Requested on:</strong> ${requestedAtDate}</p>
+                    ${swap.completedAt ? `<p><strong>Completed on:</strong> ${completedAtDate}</p>` : ''}
+                    ${swap.rating ? `<p><strong>Rating:</strong> ${'★'.repeat(swap.rating)} (${swap.rating}/5)</p>` : ''}
+                    ${swap.feedback ? `<p><strong>Feedback:</strong> ${swap.feedback}</p>` : ''}
+                </div>
+                <div class="swap-actions">
+                    ${buttonsHtml}
+                </div>
+            `;
+            return card;
+        }
+
+        /**
+         * Updates the status of a swap request.
+         * @param {string} swapId - The ID of the swap document.
+         * @param {string} newStatus - The new status ('accepted', 'rejected', 'cancelled', 'completed').
+         */
+        async function updateSwapStatus(swapId, newStatus) {
+            try {
+                const swapDocRef = doc(db, "swaps", swapId);
+                const updateData = { status: newStatus };
+
+                if (newStatus === 'completed') {
+                    updateData.completedAt = serverTimestamp();
+                }
+
+                await updateDoc(swapDocRef, updateData);
+                showNotification(`Swap status updated to ${newStatus}!`, 'success');
+                loadSwapRequests(); // Refresh the swap lists
+            } catch (error) {
+                showNotification(`Error updating swap status: ${error.message}`, 'error');
+                console.error("Error updating swap status:", error);
+            }
+        }
+
+        function acceptSwap(swapId) {
+            updateSwapStatus(swapId, 'accepted');
+        }
+
+        function rejectSwap(swapId) {
+            updateSwapStatus(swapId, 'rejected');
+        }
+
+        function cancelSwap(swapId) {
+            updateSwapStatus(swapId, 'cancelled');
+        }
+
+        function markSwapComplete(swapId, otherUserName) {
+            currentSwapId = swapId; // Store swapId for rating modal
+            currentRatedSwap = { id: swapId, otherUserName: otherUserName }; // Prepare for rating
+            updateSwapStatus(swapId, 'completed');
+            // Optionally, show a rating prompt here immediately after marking complete
+            // openRatingModal(swapId, otherUserName);
+        }
+
+        // --- Rating System ---
+
+        /**
+         * Opens the rating modal.
+         * @param {string} swapId - The ID of the swap being rated.
+         * @param {string} targetUserName - The name of the user being rated.
+         */
+        function openRatingModal(swapId, targetUserName) {
+            currentRatedSwap = { id: swapId, otherUserName: targetUserName };
+            ratingTargetUserNameSpan.textContent = targetUserName;
+            selectedRating = 0; // Reset rating
+            document.querySelectorAll('.rating-stars .star').forEach(star => {
+                star.classList.remove('active');
+            });
+            feedbackTextarea.value = '';
+            showModal('ratingModal');
+        }
+
+        /**
+         * Handles star click to select rating.
+         * @param {Event} e - The click event.
+         */
+        function selectRating(e) {
+            const clickedStar = e.target;
+            selectedRating = parseInt(clickedStar.dataset.value);
+
+            document.querySelectorAll('.rating-stars .star').forEach(star => {
+                if (parseInt(star.dataset.value) <= selectedRating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        /**
+         * Submits the rating for a completed swap.
+         * @param {Event} e - The form submission event.
+         */
+        async function submitRating(e) {
+            e.preventDefault();
+            if (!currentRatedSwap || !currentRatedSwap.id) {
+                showNotification('No swap selected for rating.', 'error');
+                return;
+            }
+            if (selectedRating === 0) {
+                showNotification('Please select a star rating.', 'error');
+                return;
+            }
+
+            try {
+                const swapDocRef = doc(db, "swaps", currentRatedSwap.id);
+                const swapDocSnap = await getDoc(swapDocRef);
+                if (!swapDocSnap.exists()) {
+                    showNotification('Swap not found for rating.', 'error');
+                    return;
+                }
+                const swapData = swapDocSnap.data();
+
+                // Determine who is giving the rating
+                const isRequester = swapData.requesterId === currentUser.id;
+
+                const updateData = {
+                    rating: selectedRating,
+                    feedback: feedbackTextarea.value.trim(),
+                    ratedAt: serverTimestamp()
+                };
+
+                if (isRequester) {
+                    updateData.ratingGivenByRequester = true;
+                } else {
+                    updateData.ratingGivenByAccepter = true;
+                }
+
+                await updateDoc(swapDocRef, updateData);
+                showNotification('Rating submitted successfully!', 'success');
+                closeModal('ratingModal');
+                loadSwapRequests(); // Refresh the swaps to update the card with rating
+            } catch (error) {
+                showNotification(`Error submitting rating: ${error.message}`, 'error');
+                console.error("Error submitting rating:", error);
+            }
+        }
+
+        // --- Admin Panel Functions ---
+
+        /**
+         * Loads and displays general statistics for the admin panel.
+         */
+        async function loadAdminStats() {
+            try {
+                // Total Users
+                const usersSnapshot = await getDocs(collection(db, "users"));
+                totalUsersStat.textContent = usersSnapshot.size;
+
+                // Active Swaps (status == 'accepted')
+                const activeSwapsQuery = query(collection(db, "swaps"), where("status", "==", "accepted"));
+                const activeSwapsSnapshot = await getDocs(activeSwapsQuery);
+                activeSwapsStat.textContent = activeSwapsSnapshot.size;
+
+                // Pending Reviews (placeholder for now, needs more complex logic to track who needs to rate whom)
+                // For a real app, you'd likely have a "review_needed" flag or similar.
+                // For this example, let's just count completed swaps without rating, which isn't perfect.
+                const completedSwaps = await getDocs(query(collection(db, "swaps"), where("status", "==", "completed")));
+                let pendingReviewsCount = 0;
+                completedSwaps.forEach(doc => {
+                    const swap = doc.data();
+                    if (!swap.ratingGivenByRequester || !swap.ratingGivenByAccepter) {
+                        pendingReviewsCount++;
+                    }
+                });
+                pendingReviewsStat.textContent = pendingReviewsCount;
+
+                // Reported Users (placeholder - requires a 'reports' collection)
+                // For now, let's assume 0, or you can mock it.
+                reportedUsersStat.textContent = 0; // You'd fetch from a 'reports' collection
+            } catch (error) {
+                showNotification(`Error loading admin stats: ${error.message}`, 'error');
+                console.error("Error loading admin stats:", error);
+            }
+        }
+
+        /**
+         * Loads and displays all users for the admin panel.
+         */
+        async function loadAdminUsers() {
+            adminUsersDiv.innerHTML = '';
+            try {
+                const usersSnapshot = await getDocs(collection(db, "users"));
+                if (usersSnapshot.empty) {
+                    adminUsersDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No users registered.</p>';
+                    return;
+                }
+
+                usersSnapshot.forEach(doc => {
+                    const userData = doc.data();
+                    const userCard = document.createElement('div');
+                    userCard.className = 'user-card'; // Reuse user-card style
+                    userCard.innerHTML = `
+                        <div class="user-info">
+                            <div class="user-avatar">${userData.name ? userData.name.charAt(0).toUpperCase() : userData.email.charAt(0).toUpperCase()}</div>
+                            <div>
+                                <h3>${userData.name || 'N/A'}</h3>
+                                <p><strong>Email:</strong> ${userData.email}</p>
+                                <p><strong>ID:</strong> ${doc.id}</p>
+                                <p><strong>Admin:</strong> ${userData.isAdmin ? 'Yes' : 'No'}</p>
+                                <p><strong>Public Profile:</strong> ${userData.isPublic ? 'Yes' : 'No'}</p>
+                            </div>
+                        </div>
+                        <p><strong>Offered Skills:</strong> ${userData.offeredSkills.join(', ') || 'None'}</p>
+                        <p><strong>Wanted Skills:</strong> ${userData.wantedSkills.join(', ') || 'None'}</p>
+                        <div class="swap-actions" style="margin-top: 15px;">
+                            ${doc.id !== auth.currentUser.uid ? `<button class="btn btn-danger" onclick="deleteUser('${doc.id}', '${userData.email}')">Delete User</button>` : ''}
+                            ${!userData.isAdmin ? `<button class="btn btn-success" onclick="toggleAdmin('${doc.id}', true)">Make Admin</button>` : ''}
+                            ${userData.isAdmin && doc.id !== auth.currentUser.uid ? `<button class="btn btn-info" onclick="toggleAdmin('${doc.id}', false)">Remove Admin</button>` : ''}
+                        </div>
+                    `;
+                    adminUsersDiv.appendChild(userCard);
+                });
+            } catch (error) {
+                showNotification(`Error loading admin users: ${error.message}`, 'error');
+                console.error("Error loading admin users:", error);
+            }
+        }
+
+        /**
+         * Deletes a user's profile from Firestore.
+         * NOTE: This only deletes the Firestore profile. To delete the Authentication user,
+         * you need Cloud Functions or manual deletion in Firebase Auth console.
+         * @param {string} userId - The ID of the user to delete.
+         * @param {string} userEmail - The email of the user (for confirmation).
+         */
+        async function deleteUser(userId, userEmail) {
+            if (!confirm(`Are you sure you want to delete user: ${userEmail}? This action is irreversible for their data.`)) {
+                return;
+            }
+
+            try {
+                // Delete user's profile document
+                await deleteDoc(doc(db, "users", userId));
+                // Optionally, delete their swaps
+                const userSwapsQuery = query(collection(db, "swaps"),
+                    where("requesterId", "==", userId),
+                    where("accepterId", "==", userId)
+                ); // This query won't work to get all their swaps directly. You'd need two separate queries or a Cloud Function.
+                // For simplicity, we'll just delete the profile.
+
+                showNotification(`User ${userEmail} profile deleted.`, 'success');
+                loadAdminUsers(); // Refresh the list
+            } catch (error) {
+                showNotification(`Error deleting user: ${error.message}`, 'error');
+                console.error("Error deleting user:", error);
+            }
+        }
+
+        /**
+         * Toggles the admin status of a user.
+         * @param {string} userId - The ID of the user.
+         * @param {boolean} isAdmin - True to make admin, false to remove admin.
+         */
+        async function toggleAdmin(userId, isAdmin) {
+            if (!confirm(`Are you sure you want to ${isAdmin ? 'MAKE' : 'REMOVE'} admin status for this user?`)) {
+                return;
+            }
+            try {
+                await updateDoc(doc(db, "users", userId), {
+                    isAdmin: isAdmin
+                });
+                showNotification(`User admin status updated to ${isAdmin}!`, 'success');
+                loadAdminUsers(); // Refresh the list
+            } catch (error) {
+                showNotification(`Error updating admin status: ${error.message}`, 'error');
+                console.error("Error toggling admin status:", error);
+            }
+        }
+
+        /**
+         * Loads and displays all swaps for the admin panel.
+         */
+        async function loadAdminSwaps() {
+            adminSwapsDiv.innerHTML = '';
+            try {
+                const swapsSnapshot = await getDocs(collection(db, "swaps"), orderBy("requestedAt", "desc"));
+                if (swapsSnapshot.empty) {
+                    adminSwapsDiv.innerHTML = '<p style="text-align: center; color: #ccc;">No swap requests found.</p>';
+                    return;
+                }
+
+                swapsSnapshot.forEach(doc => {
+                    const swap = doc.data();
+                    const swapCard = document.createElement('div');
+                    swapCard.className = 'swap-request'; // Reuse swap-request style
+                    const requestedAtDate = swap.requestedAt ? new Date(swap.requestedAt.toDate()).toLocaleString() : 'N/A';
+                    const completedAtDate = swap.completedAt ? new Date(swap.completedAt.toDate()).toLocaleString() : 'N/A';
+
+                    swapCard.innerHTML = `
+                        <h4>Swap ID: ${doc.id} <span class="swap-status status-${swap.status}">${swap.status}</span></h4>
+                        <div class="swap-details">
+                            <p><strong>Requester:</strong> ${swap.requesterName} (${swap.requesterId})</p>
+                            <p><strong>Accepter:</strong> ${swap.accepterName} (${swap.accepterId})</p>
+                            <p><strong>Requester Offers:</strong> ${swap.requesterSkillOffered}</p>
+                            <p><strong>Accepter Offers:</strong> ${swap.accepterSkillOffered}</p>
+                            ${swap.message ? `<p><strong>Message:</strong> ${swap.message}</p>` : ''}
+                            <p><strong>Requested At:</strong> ${requestedAtDate}</p>
+                            ${swap.completedAt ? `<p><strong>Completed At:</strong> ${completedAtDate}</p>` : ''}
+                            ${swap.rating ? `<p><strong>Rating:</strong> ${'★'.repeat(swap.rating)} (${swap.rating}/5)</p>` : ''}
+                            ${swap.feedback ? `<p><strong>Feedback:</strong> ${swap.feedback}</p>` : ''}
+                        </div>
+                        <div class="swap-actions">
+                            ${swap.status === 'pending' ? `<button class="btn btn-success" onclick="updateSwapStatus('${doc.id}', 'accepted')">Accept</button>` : ''}
+                            ${swap.status === 'pending' || swap.status === 'accepted' ? `<button class="btn btn-danger" onclick="updateSwapStatus('${doc.id}', 'rejected')">Reject/Cancel</button>` : ''}
+                            ${swap.status === 'accepted' ? `<button class="btn btn-info" onclick="updateSwapStatus('${doc.id}', 'completed')">Mark Completed</button>` : ''}
+                            <button class="btn btn-danger" onclick="deleteSwap('${doc.id}')">Delete Swap</button>
+                        </div>
+                    `;
+                    adminSwapsDiv.appendChild(swapCard);
+                });
+            } catch (error) {
+                showNotification(`Error loading admin swaps: ${error.message}`, 'error');
+                console.error("Error loading admin swaps:", error);
+            }
+        }
+
+        /**
+         * Deletes a swap request document from Firestore.
+         * @param {string} swapId - The ID of the swap to delete.
+         */
+        async function deleteSwap(swapId) {
+            if (!confirm('Are you sure you want to delete this swap? This action is irreversible.')) {
+                return;
+            }
+            try {
+                await deleteDoc(doc(db, "swaps", swapId));
+                showNotification('Swap deleted successfully!', 'success');
+                loadAdminSwaps(); // Refresh the list
+            } catch (error) {
+                showNotification(`Error deleting swap: ${error.message}`, 'error');
+                console.error("Error deleting swap:", error);
+            }
+        }
+
+        /**
+         * Placeholder for sending platform-wide messages (would require a Cloud Function or dedicated messaging system).
+         * @param {Event} e - The form submission event.
+         */
+        async function sendMessage(e) {
+            e.preventDefault();
+            const title = messageTitleInput.value.trim();
+            const content = messageContentTextarea.value.trim();
+
+            if (!title || !content) {
+                showNotification('Please enter both a title and content for the message.', 'error');
+                return;
+            }
+
+            // In a real application, this would trigger a Cloud Function
+            // to send push notifications, emails, or update a 'messages' collection
+            // for all users. Directly sending to all users from client-side is not scalable/secure.
+            console.log("Sending platform message:", { title, content });
+            showNotification('Platform message sent (placeholder)!', 'info');
+            messageForm.reset();
+        }
+
+        /**
+         * Placeholder for downloading various reports.
+         * In a real application, this would typically involve server-side generation
+         * of CSV/Excel files from your Firestore data (e.g., via Cloud Functions).
+         * @param {string} reportType - The type of report to download.
+         */
+        function downloadReport(reportType) {
+            showNotification(`Downloading ${reportType} report (placeholder)...`, 'info');
+            console.log(`Simulating download for report type: ${reportType}`);
+            // You would trigger a Cloud Function here to generate and provide a download link
+        }
+
+
+        // --- Event Listeners ---
+
+        // Authentication Forms
+        authForm.addEventListener('submit', signIn); // Default submit is sign-in
+        signUpBtn.addEventListener('click', signUp);
+        signInBtn.addEventListener('click', signIn); // Explicit sign-in button
+
+
+        // Profile Form
+        profileForm.addEventListener('submit', saveProfile);
+        // Event listener for rating stars
+        ratingStars.addEventListener('click', selectRating);
+        // Rating Form
+        ratingForm.addEventListener('submit', submitRating);
+        // Swap Form
+        swapForm.addEventListener('submit', sendSwapRequest);
+        // Admin Message Form
+        messageForm.addEventListener('submit', sendMessage);
+
+        // Make utility functions globally accessible for inline HTML `onclick`
+        window.showSection = showSection;
+        window.closeModal = closeModal;
+        window.addSkill = addSkill;
+        window.removeSkill = removeSkill;
+        window.searchUsers = searchUsers;
+        window.openSwapModal = openSwapModal;
+        window.showSwapTab = showSwapTab;
+        window.acceptSwap = acceptSwap;
+        window.rejectSwap = rejectSwap;
+        window.cancelSwap = cancelSwap;
+        window.markSwapComplete = markSwapComplete;
+        window.openRatingModal = openRatingModal;
+        window.showAdminTab = showAdminTab;
+        window.deleteUser = deleteUser;
+        window.toggleAdmin = toggleAdmin;
+        window.deleteSwap = deleteSwap;
+        window.downloadReport = downloadReport;
+        window.signOutUser = signOutUser;
+        window.updateSwapStatus = updateSwapStatus; // Expose for admin actions
+
+        // Initial load: The onAuthStateChanged listener will handle which section to show.
+        // It's crucial that this listener runs first.
+    </script>
+</body>
+
+</html>
