@@ -93,22 +93,6 @@ service cloud.firestore {
 
 ---
 
-## 🧪 Testing
-
-Use Firebase Emulator Suite:
-
-bash
-firebase emulators:start
-
-
-Run frontend:
-
-bash
-cd web
-npm run dev
-
-
----
 
 ## 🛠 Setup & Installation
 
