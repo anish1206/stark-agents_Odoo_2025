@@ -1,6 +1,7 @@
 # Skill Swap Platform
 
 A full-stack Firebase-powered application that allows users to offer and request skill swaps. Users can list their skills, request swaps, accept/reject offers, provide feedback, and more. Admins can moderate content and manage user activity. The app is responsive and mobile-friendly.
+
 By team - Stark Agents
 Anish Kshirsagar(TL) - anishkshirsagar120306@gmail.com
 Prathamesh Kamble - prathamesh.kamble24@vit.edu
